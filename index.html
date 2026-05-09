@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قرآن كريم</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Amiri+Quran&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+      <link rel="icon" type="image/x-icon" href="do.png">
+    <meta name="keywords" content="قرآن كريم, استماع القرآن, تحميل القرآن, قراءة القرآن, رياض الصالحين, تلاوات قرآنية, مصحف إلكتروني, إذاعة القرآن الكريم, خدمة كتاب الله">
+    <meta name="description" content="موقع قرآن كريم للاستماع والتحميل والقراءة. استمتع بتلاوات أشهر القراء، حمل السور بجودة عالية، واطلع على رياض الصالحين. خدمة مجانية لخدمة كتاب الله.">
+</head>
+<body>
+    <div class="quran-bg"></div>
+
+    <!-- الهيدر العلوي - واحد بس -->
+    <header class="top-header">
+        <div class="logo-top">
+            <h1>قرآن كريم <span>com.</span></h1>
+        </div>
+
+        <nav class="top-nav">
+            <a href="#" data-page="quran" class="active"><i class="fa-solid fa-book-quran"></i> <span data-i18n="nav_mushaf">المصحف</span></a>
+            <a href="#" data-page="listen"><i class="fa-solid fa-headphones"></i> <span data-i18n="nav_listen">استماع</span></a>
+            <a href="#" data-page="download"><i class="fa-solid fa-download"></i> <span data-i18n="nav_download">تحميل</span></a>
+            <a href="#" data-page="favorites"><i class="fa-solid fa-heart"></i> <span data-i18n="nav_fav">المفضلة</span></a>
+            <a href="#" data-page="riyad"><i class="fa-solid fa-book"></i> <span data-i18n="nav_riyad">رياض الصالحين</span></a>
+            <a href="#" data-page="recitations"><i class="fa-solid fa-radio"></i> الإذاعة</a>
+        </nav>
+        <h1>صلي علي محمد 
+        </h1>
+
+        <!-- أيقونة اللغات -->
+        <div class="lang-dropdown">
+            <button class="lang-btn" id="langBtn">
+                <i class="fa-solid fa-globe"></i>
+                <span id="currentLang">العربية</span>
+            </button>
+            <div class="lang-menu" id="langMenu">
+                <a href="#" data-lang="ar">🇸🇦 العربية</a>
+                <a href="#" data-lang="en">🇺🇸 English</a>
+                <a href="#" data-lang="fr">🇫🇷 Français</a>
+                <a href="#" data-lang="ur">🇵🇰 اردو</a>
+                <a href="#" data-lang="tr">🇹🇷 Türkçe</a>
+                <a href="#" data-lang="id">🇮🇩 Indonesia</a>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- شريط البحث + الورد اليومي -->
+    <div class="search-wird-wrapper">
+        <div style="position: sticky; top: 10px; z-index: 10; background: var(--bg); padding: 15px 0 10px 0;">
+            <input type="text" id="searchBox" placeholder="🔍 ابحث عن سورة أو قارئ..."
+                   style="width: 100%; padding: 12px 15px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); color: var(--text); font-size: 1rem;">
+        </div>
+
+        <div id="wirdBar" class="wird-bar">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <strong>وردك اليوم</strong>
+                <button onclick="setWird()" style="background:none;border:none;color:var(--primary);cursor:pointer;font-weight:bold;">تعديل الهدف</button>
+            </div>
+            <div class="wird-progress">
+                <div id="wirdProgressFill" class="wird-progress-fill"></div>
+            </div>
+            <div id="wirdStats" class="wird-stats"></div>
+            <button id="continueBtn" class="continue-btn"></button>
+        </div>
+    </div>
+
+    <!-- الصفحات -->
+    <div class="page-container">
+        <!-- 1. المصحف -->
+        <div class="page" id="page-quran">
+            <h2 class="page-title">المصحف الشريف</h2>
+            <div id="mushafContent" class="content-box">
+                <div class="loader">جاري تحميل المصحف...</div>
+            </div>
+        </div>
+
+        <!-- 2. الاستماع -->
+        <div class="page" id="page-listen" style="display:none;">
+            <h2 class="page-title">الاستماع للقرآن</h2>
+            <div class="content-box">
+                <select id="reciterSelect" class="main-select">
+                    <option value="">اختار القارئ</option>
+                </select>
+                <div class="sura-grid" id="listenSuraGrid"></div>
+            </div>
+        </div>
+
+        <!-- 3. التحميل -->
+        <div class="page" id="page-download" style="display:none;">
+            <h2 class="page-title">تحميل السور</h2>
+            <div class="content-box">
+                <select id="downloadReciterSelect" class="main-select">
+                    <option value="">اختار القارئ أول</option>
+                </select>
+                <div id="downloadList" class="download-list"></div>
+            </div>
+        </div>
+
+        <!-- 4. المفضلة -->
+        <div class="page" id="page-favorites" style="display:none;">
+            <h2 class="page-title">السور المفضلة</h2>
+            <div class="content-box" id="favoritesList">
+                <p class="empty-msg">لسه مضفتش سور للمفضلة. دوس على <i class="fa-solid fa-heart"></i> جنب أي سورة</p>
+            </div>
+        </div>
+
+        <!-- 5. رياض الصالحين -->
+        <div class="page" id="page-riyad" style="display:none;">
+            <h2 class="page-title">رياض الصالحين</h2>
+            <div class="content-box">
+                <div class="search-box" style="margin-bottom:20px;">
+                    <input type="text" id="searchHadith" placeholder="ابحث في الأحاديث...">
+                    <i class="fa-solid fa-search"></i>
+                </div>
+                <div id="riyadContent" class="riyad-list">
+                    <div class="loader">جاري التحميل...</div>
+                </div>
+            </div>
+        </div>
+
+        6. الإذاعة
+  
+ <div class="page" id="page-recitations" style="display:none;">
+    <h2 class="page-title">إذاعة القرآن الكريم مباشر</h2>
+    <div class="content-box">
+        
+        <!-- الصلاة على النبي -->
+        <div class="salawat-box">
+            <i class="fa-solid fa-star-and-crescent"></i>
+            <p>صلِّ على محمد</p>
+            <span>صلى الله عليه وسلم</span>
+        </div>
+
+        <!-- لف الإذاعات في div لوحده -->
+        <div class="radio-wrapper">
+            <div class="radio-box">
+                <h3><i class="fa-solid fa-tower-broadcast"></i> إذاعة القرآن الكريم من القاهرة</h3>
+                <audio controls src="https://stream.radiojar.com/8s5u5tpdtwzuv"></audio>
+            </div>
+            <div class="radio-box">
+                <h3><i class="fa-solid fa-kaaba"></i> إذاعة الحرم المكي</h3>
+                <audio controls src="https://stream.radiojar.com/4wqre23fytzuv"></audio>
+            </div>
+        </div>
+
+    </div>
+</div>
+        <!-- <div class="page" id="page-recitations" style="display:none;">
+            <h2 class="page-title">إذاعة القرآن الكريم مباشر</h2>
+            <div class="content-box">
+                <div class="radio-box">
+                    <h3><i class="fa-solid fa-tower-broadcast"></i> إذاعة القرآن الكريم من القاهرة</h3>
+                    <audio controls src="https://stream.radiojar.com/8s5u5tpdtwzuv"></audio>
+                </div>
+                <div class="radio-box">
+                    <h3><i class="fa-solid fa-kaaba"></i> إذاعة الحرم المكي</h3>
+                    <audio controls src="https://stream.radiojar.com/4wqre23fytzuv"></audio>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- مشغل الصوت الثابت -->
+    <div class="player-bar" id="playerBar" style="display:none;">
+        <div class="player-details">
+            <p class="current-surah-name">اختر سورة للتشغيل</p>
+            <p class="current-reciter-name" style="font-size:0.9rem; color:var(--muted);"></p>
+            <p id="currentAyah" style="font-size:0.85rem; color:var(--primary); margin-top:5px;"></p>
+        </div>
+
+        <div class="progress-container" style="display:flex;align-items:center;gap:10px;margin:10px 0;">
+            <span id="currentTime" style="font-size:0.8rem;color:var(--muted);">0:00</span>
+            <input type="range" id="progressBar" value="0" min="0" max="100" style="flex:1;">
+            <span id="duration" style="font-size:0.8rem;color:var(--muted);">0:00</span>
+        </div>
+
+        <div class="player-controls" style="display:flex;justify-content:center;align-items:center;gap:15px;">
+            <button onclick="sleepTimer(30)" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.2rem;" title="مؤقت النوم">😴</button>
+            <button id="playPauseBtn"><i class="fa-solid fa-play"></i></button>
+            <button onclick="sleepTimer(60)" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.2rem;" title="مؤقت النوم">🌙</button>
+        </div>
+        <audio id="audioPlayer"></audio>
+        <button id="closePlayer"><i class="fa-solid fa-times"></i></button>
+    </div>
+
+
+<!-- Footer إخلاء المسؤولية -->
+<footer class="legal-footer">
+    <div class="footer-content">
+        <div class="disclaimer">
+            <h4><i class="fa-solid fa-shield-halved"></i> إخلاء مسؤولية</h4>
+            <p>هذا الموقع للاستماع والتحميل والقراءة تعليمي مجاني لخدمة القرآن الكريم. جميع التلاوات والمحتوى الصوتي من مصادر عامة ومجانية. لا نستضيف أي ملفات على سيرفراتنا، جميع الروابط من API خارجي. الموقع غير مسؤول عن أي استخدام خاطئ للمحتوى.</p>
+            <p>للتواصل بخصوص حقوق الملكية: <a href="mailto:zeyadmomen09@gmail.com">zeyadmomen09@gmail.com</a></p>
+        </div>
+        
+        <div class="contact-box">
+            <h4><i class="fa-solid fa-headset"></i> تواصل معنا</h4>
+            <a href="https://wa.me/201153004574?text=السلام عليكم، عندي مشكلة في الموقع" target="_blank" class="whatsapp-btn">
+                <i class="fa-brands fa-whatsapp"></i> واتساب
+            </a>
+            <button onclick="openComplaintBox()" class="complaint-btn">
+                <i class="fa-solid fa-envelope"></i> شكوى أو اقتراح
+            </button>
+        </div>
+    <div class="copyright">
+        <p>© 2026 قرآن كريم - جميع الحقوق محفوظة | صُنع بـ ❤️ لخدمة كتاب الله</p>
+    </div>
+</footer>
+
+<!-- نافذة الشكاوى -->
+<div id="complaintModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeComplaintBox()">&times;</span>
+        <h3><i class="fa-solid fa-comment-dots"></i> أرسل ملاحظتك</h3>
+        <form id="complaintForm" onsubmit="sendComplaint(event)">
+            <input type="text" id="userName" placeholder="اسمك (اختياري)" />
+            <input type="email" id="userEmail" placeholder="إيميلك للرد (اختياري)" />
+            <select id="complaintType" required>
+                <option value="">اختر نوع الرسالة</option>
+                <option value="مشكلة تقنية">مشكلة تقنية</option>
+                <option value="اقتراح">اقتراح</option>
+                <option value="خطأ في المحتوى">خطأ في المحتوى</option>
+                <option value="حقوق ملكية">حقوق ملكية</option>
+                <option value="أخرى">أخرى</option>
+            </select>
+            <textarea id="complaintMsg" placeholder="اكتب رسالتك هنا..." required rows="5"></textarea>
+            <button type="submit"><i class="fa-solid fa-paper-plane"></i> إرسال</button>
+        </form>
+    </div>
+</div>
+
+<!-- أيقونة واتساب ثابتة -->
+<a href="https://wa.me/201153004574?text=السلام عليكم" class="whatsapp-float" target="_blank">
+    <i class="fa-brands fa-whatsapp"></i>
+</a>
+
+
+    <script src="java.js"></script>
+</body>
+</html>

@@ -1,0 +1,492 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Amiri+Quran&display=swap');
+
+:root {
+    --bg: #0a0a0a;
+    --card: #1a1a1a;
+    --text: #fff;
+    --muted: #888;
+    --border: #2a2a2a;
+    --primary: #0d6c4c;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+.quran-bg {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)),
+                url('https://images.unsplash.com/photo-1609599006353-e629aa40cba3?q=80&w=1974') center/cover;
+    z-index: -1;
+    opacity: 0.3;
+}
+
+/* الهيدر العلوي */
+.top-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--primary);
+    padding: 15px 20px;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.logo-top h1 {
+    font-size: 2rem;
+    color: var(--text);
+    font-weight: 700;
+    margin: 0;
+}
+
+.logo-top span { color: var(--primary); font-size: 1.3rem; }
+
+.top-nav {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.top-nav a {
+    color: var(--text);
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    transition: 0.2s;
+    font-size: 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.top-nav a:hover,.top-nav a.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.search-wird-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 120px 20px 0;
+}
+
+/* باقي الستايل بتاعك القديم كله هنا... */
+.page-container { max-width: 1200px; margin: 0 auto; padding: 20px 20px 120px; }
+.page-title { text-align: center; font-size: 2.2rem; color: var(--primary); margin-bottom: 25px; font-family: 'Amiri Quran', serif; }
+.content-box { background: rgba(30, 30, 30, 0.8); padding: 30px; border-radius: 20px; border: 1px solid var(--primary); backdrop-filter: blur(10px); }
+.main-select { width: 100%; padding: 15px; border-radius: 12px; background: var(--card); color: var(--text); border: 2px solid var(--primary); font-size: 18px; margin-bottom: 20px; }
+.sura-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+.sura-card { background: var(--card); padding: 20px; border-radius: 15px; border: 2px solid var(--border); transition: 0.2s; }
+.sura-card:hover { border-color: var(--primary); transform: translateY(-3px); }
+.actions { display: flex; gap: 10px; margin-top: 15px; }
+.actions button { flex: 1; background: var(--primary); color: #fff; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-size: 16px; }
+.fav-btn { background: var(--border)!important; width: 45px; flex: none!important; }
+.fav-btn.active { background: #e91e63!important; color: #fff; }
+.download-list { display: flex; flex-direction: column; gap: 12px; }
+.download-item { background: var(--card); padding: 18px 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); }
+.download-item button { background: var(--primary); color: #fff; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+
+/* المشغل */
+.player-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(15, 15, 15, 0.98);
+    padding: 15px 20px;
+    border-top: 3px solid var(--primary);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+}
+.player-details { text-align: center; margin-bottom: 10px; }
+#progressBar { accent-color: var(--primary); cursor: pointer; }
+#playPauseBtn { background: var(--primary); border: none; color: #fff; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; }
+#closePlayer { position: absolute; top: 10px; left: 10px; background: #e91e63; border: none; color: #fff; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; }
+
+/* الورد اليومي */
+.wird-bar { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin: 15px 0; display: none; }
+.wird-bar.show { display: block; }
+.wird-progress { width: 100%; height: 8px; background: var(--border); border-radius: 4px; margin: 10px 0; overflow: hidden; }
+.wird-progress-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.5s; }
+.wird-stats { display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--muted); }
+.continue-btn { background: var(--primary); color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; display: none; width: 100%; }
+.continue-btn.show { display: block; }
+
+/* اللغات */
+.lang-dropdown { position: relative; }
+.lang-btn { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 10px 18px; border-radius: 10px; cursor: pointer; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+.lang-menu { position: absolute; top: 55px; left: 0; background: var(--card); border: 1px solid var(--primary); border-radius: 12px; width: 200px; max-height: 400px; overflow-y: auto; display: none; z-index: 1001; }
+.lang-menu.active { display: block; }
+.lang-menu a { display: block; color: var(--text); text-decoration: none; padding: 12px 15px; border-bottom: 1px solid var(--border); }
+.lang-menu a:hover { background: var(--primary); }
+
+.loader { text-align: center; padding: 50px; color: var(--primary); font-size: 20px; }
+.empty-msg { text-align: center; padding: 50px; color: var(--muted); font-size: 18px; }
+
+/* موبايل */
+@media (max-width: 900px) {
+  .top-header { flex-direction: column; padding: 10px; }
+  .top-nav { width: 100%; justify-content: center; }
+  .top-nav a { padding: 8px 12px; font-size: 14px; }
+  .page-container { padding-top: 20px; }
+  .search-wird-wrapper { padding-top: 160px; }
+  .sura-grid { grid-template-columns: 1fr; }
+}
+
+/* بوكس الصلاة على النبي */
+.salawat-box {
+    background: linear-gradient(135deg, rgba(13, 108, 76, 0.2), rgba(13, 108, 76, 0.05));
+    border: 2px solid var(--primary);
+    border-radius: 15px;
+    padding: 25px 20px;
+    margin-bottom: 25px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.salawat-box::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(13, 108, 76, 0.1) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.salawat-box i {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-bottom: 15px;
+    display: block;
+    position: relative;
+    z-index: 1;
+}
+
+.salawat-box p {
+    font-family: 'Amiri Quran', serif;
+    font-size: 2rem;
+    color: var(--text);
+    margin: 0;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+}
+
+.salawat-box span {
+    display: block;
+    font-size: 1.1rem;
+    color: var(--primary);
+    margin-top: 8px;
+    font-weight: bold;
+    position: relative;
+    z-index: 1;
+}
+
+/* عشان يبقى جنب الإذاعة على الكمبيوتر */
+/* @media (min-width: 900px) {
+    #page-recitations .content-box {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 20px;
+        align-items: start;
+    }
+    .salawat-box {
+        margin-bottom: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+} */
+ /* بوكس الصلاة على النبي - متصلح */
+.salawat-box {
+    background: linear-gradient(135deg, rgba(13, 108, 76, 0.2), rgba(13, 108, 76, 0.05));
+    border: 2px solid var(--primary);
+    border-radius: 15px;
+    padding: 25px 20px;
+    margin-bottom: 25px;
+    text-align: center;
+    position: relative;
+    overflow: hidden; /* ده اللي كان موقف الأنيميشن */
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.salawat-box::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(13, 108, 76, 0.15) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    animation: rotate 15s linear infinite;
+    z-index: 0;
+}
+
+@keyframes rotate {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.salawat-box i {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-bottom: 15px;
+    display: block;
+    position: relative;
+    z-index: 1;
+}
+
+.salawat-box p {
+    font-family: 'Amiri Quran', serif;
+    font-size: 2rem;
+    color: var(--text);
+    margin: 0;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+}
+
+.salawat-box span {
+    display: block;
+    font-size: 1.1rem;
+    color: var(--primary);
+    margin-top: 8px;
+    font-weight: bold;
+    position: relative;
+    z-index: 1;
+}
+
+/* الكمبيوتر: نخليها شمال والإذاعة يمين */
+@media (min-width: 900px) {
+    #page-recitations .content-box {
+        display: flex;
+        gap: 20px;
+        align-items: stretch;
+    }
+    .salawat-box {
+        flex: 0 0 35%; /* 35% من العرض */
+        margin-bottom: 0;
+        order: 1; /* يخليها شمال */
+    }
+    .radio-wrapper {
+        flex: 1;
+        order: 2; /* الإذاعات يمين */
+    }
+}
+/* Footer قانوني */
+.legal-footer {
+    background: #0a0a0a;
+    border-top: 2px solid var(--primary);
+    padding: 40px 20px 20px;
+    margin-top: 60px;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+    margin-bottom: 30px;
+}
+
+.disclaimer h4, .contact-box h4 {
+    color: var(--primary);
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.disclaimer p {
+    color: var(--muted);
+    line-height: 1.8;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.disclaimer a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.contact-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.whatsapp-btn, .complaint-btn {
+    background: #25D366;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: 0.2s;
+}
+
+.whatsapp-btn:hover { background: #1da851; transform: translateY(-2px); }
+
+.complaint-btn {
+    background: var(--primary);
+}
+
+.complaint-btn:hover { background: #0a5a3e; transform: translateY(-2px); }
+
+.copyright {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+/* أيقونة واتساب ثابتة */
+.whatsapp-float {
+    position: fixed;
+    bottom: 100px;
+    left: 20px;
+    background: #25D366;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+    z-index: 999;
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+}
+
+/* نافذة الشكاوى */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: var(--card);
+    margin: 5% auto;
+    padding: 30px;
+    border: 2px solid var(--primary);
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+}
+
+.modal-content h3 {
+    color: var(--primary);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    color: var(--muted);
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.close-modal:hover { color: #ff3b30; }
+
+#complaintForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#complaintForm input,
+#complaintForm select,
+#complaintForm textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 1rem;
+    font-family: 'Cairo', sans-serif;
+}
+
+#complaintForm button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+#complaintForm button:hover { background: #0a5a3e; }
+
+/* موبايل */
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+    .whatsapp-float {
+        bottom: 80px;
+        left: 15px;
+        width: 55px;
+        height: 55px;
+        font-size: 1.8rem;
+    }
+}
